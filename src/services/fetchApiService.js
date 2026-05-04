@@ -1,6 +1,5 @@
 import axios from "axios";
 
-
 const createAxios = (token='') => {
   return axios.create({
     baseURL: "https://dummyjson.com",

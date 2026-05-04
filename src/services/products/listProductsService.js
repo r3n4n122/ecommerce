@@ -1,4 +1,4 @@
-import { getInstance } from "./fetchApiService.js";
+import { getInstance } from "../fetchApiService.js";
 
 export const listProducts = async ({limit, page, search, category}) => {
   const skip = (page - 1) * limit;
@@ -13,15 +13,15 @@ export const listProducts = async ({limit, page, search, category}) => {
     path = `/products?limit=${limit || 10}&skip=${skip || 0}`
   }
 
-  const results = await getInstance({
+  const response = await getInstance({
     path: path,
   })
 
   const products = {
     page: page,
-    limit: results.data.limit,
-    total: results.data.total,
-    data: (results.data.products || []).map((item => (
+    limit: response.data.limit,
+    total: response.data.total,
+    data: (response.data.products || []).map((item => (
       {
         id: item.id,
         name: item.title,
