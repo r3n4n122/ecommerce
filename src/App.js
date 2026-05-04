@@ -1,5 +1,8 @@
 import express from 'express'
-import authRouter from './routers/authRouter.js'
+import {
+  authRouter, 
+  productRouter
+} from './routers/index.js'
 import { errorMiddleware } from './middleware/errorMiddleware.js';
 
 const app = express();
@@ -7,6 +10,7 @@ const app = express();
 app.use(express.json());
 
 app.use('/auth', authRouter)
+app.use('/products', productRouter)
 app.use('/', (req, res) => {
   res.status(200).json({message: "Hello Word"});
 });
