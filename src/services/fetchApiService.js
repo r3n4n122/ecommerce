@@ -20,7 +20,6 @@ export const getInstance = ({path, token='', params={}}) => {
 
 export const postInstance = ({path, token='', params={}}) => {
 
-  console.log(params)
   return createAxios(token).post(
     path,
     params
