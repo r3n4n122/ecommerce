@@ -9,7 +9,6 @@ export const listProducts = async ({limit, page, search, category}) => {
     path = `/products/search?q=${search}&limit=${limit || 10}&skip=${skip || 0}`
   }else if(category){
     path = `/products/category/${category}?limit=${limit || 10}&skip=${skip || 0}`
-    console.log(path)
   }else{
     path = `/products?limit=${limit || 10}&skip=${skip || 0}`
   }

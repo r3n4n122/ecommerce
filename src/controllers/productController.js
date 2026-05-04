@@ -1,5 +1,5 @@
 import AppError from "../errors/AppError.js";
-import { listProducts } from "../services/ProductService.js";
+import { listProducts } from "../services/products/listProductsService.js";
 
 export const indexProducts = async (req, res, next) => {
   try{
@@ -28,5 +28,13 @@ export const indexProducts = async (req, res, next) => {
     )
   }catch(error){
     next(error);
+  }
+}
+
+export const categoryProducts = async (req, res, next) => {
+  try{
+    
+  }catch(error){
+    next(error)
   }
 }
