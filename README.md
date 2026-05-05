@@ -14,7 +14,7 @@ A aplicação utiliza Node.js (v18+) com ES Modules e segue uma estrutura organi
 ------------------------------
 ## ⚖️ Justificativa do Uso do express
 
-### Aderência ao escopo do projeto
+### Escopo do projeto
 * O desafio não exige alta performance ou throughput elevado, onde o Fastify poderia se destacar. O Express atende plenamente aos requisitos propostos.
 
 ### Simplicidade e produtividade
