@@ -1,7 +1,8 @@
 import express from 'express'
 import {
   authRouter, 
-  productRouter
+  productRouter,
+  cardRouter
 } from './routers/index.js'
 import { errorMiddleware } from './middleware/errorMiddleware.js';
 
@@ -11,6 +12,7 @@ app.use(express.json());
 
 app.use('/auth', authRouter)
 app.use('/products', productRouter)
+app.use('/cards', cardRouter)
 app.use('/', (req, res) => {
   res.status(200).json({message: "Hello Word"});
 });
