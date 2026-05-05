@@ -1,6 +1,5 @@
 export const errorMiddleware = (err, req, res, next) => {
   const status = err.status || 500
-  const isProduction = process.env.NODE_ENV === 'production';
   
   switch(status){
     case 400:

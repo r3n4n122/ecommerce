@@ -1,5 +1,6 @@
 import AppError from "../errors/AppError.js"
-import { addCart, validationData } from "../services/cartService.js";
+import { addCart } from "../services/cartService.js";
+import { validationData } from "../sechams/cartSchema.js"
 
 export const createCart = async (req, res, next)  => {
   try{
@@ -8,28 +9,8 @@ export const createCart = async (req, res, next)  => {
     const validation = validationData(req.body)
 
     if(!validation.success){
-      const errors = validation.error.issues;
-
-      
-      const hasParamError = errors.some(error => (
-        (error.path.includes("userId") && error.code === "invalid_type" || error.path.includes("products") && error.code === "invalid_type"
-      )))
-
-      if(hasParamError){
-        throw new AppError("`userId` ou `products` ausentes", 400)
-      }
-
-      const isProductInvalid = errors.some(error => 
-        error.path.includes('products') && 
-        error.code === "too_small" && 
-        error.type === "array" &&
-        error.minimum === 1 ||
-        error.message === "A quantidade deve ser no mínimo 1"
-      );
-
-      if(isProductInvalid){
-        throw new AppError("`products` vazio ou com `quantity < 1`", 400)
-      }
+      const firstError = validation.error.issues[0].message;
+      throw new AppError(firstError, 400);
     }
 
     const response = await addCart({
@@ -45,3 +26,10 @@ export const createCart = async (req, res, next)  => {
   }
 }
 
+export const updateCard = async (req, res, next)  => {
+  try{
+
+  }catch(error){
+    next(error);
+  }
+}
