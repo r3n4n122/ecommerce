@@ -6,7 +6,7 @@ export const authLogin = async ({ username, password }) => {
   try {
     const response = await postInstance({
       path: '/auth/login',
-      params: { 
+      body: { 
         username: username, 
         password: password,
         expiresInMins: 30 

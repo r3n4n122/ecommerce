@@ -2,7 +2,7 @@ import axios from "axios";
 
 const createAxios = (token='') => {
   return axios.create({
-    baseURL: "https://dummyjson.com",
+    baseURL: process.env.EXTERNAL_API_URL,
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`
@@ -10,17 +10,25 @@ const createAxios = (token='') => {
   })
 }
 
-export const getInstance = ({path, token='', params={}}) => {
+export const getInstance = ({path, token='', body={}}) => {
   return createAxios(token).get(
     path,
-    params
+    body
   )
 }
 
-export const postInstance = ({path, token='', params={}}) => {
+export const postInstance = ({path, token='', body={}}) => {
 
   return createAxios(token).post(
     path,
-    params
+    body
+  )
+}
+
+export const putInstance = ({path, token='', body={}}) => {
+
+  return createAxios(token).put(
+    path,
+    body
   )
 }
