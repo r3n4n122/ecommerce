@@ -1,27 +1,26 @@
-import { authLogin } from "../services/authService.js";
 import AppError from "../errors/AppError.js";
+import { authLogin } from "../services/authService.js";
+import { validationLogin } from "../schema/authSchema.js";
 
 export const signIn = async (req, res, next) => {
-  try{
-    const credentials = req.body;
+  try {
+    const validation = validationLogin(req.body);
 
-    if(!credentials.username){
-      throw new AppError('Parâmetro username é obrigatório', 400)
+    if (!validation.success) {
+      const firstError = validation.error.issues[0].message;
+      throw new AppError(firstError, 400);
     }
 
-    if(!credentials.password){
-      throw new AppError('Parâmetro password é obrigatório', 400)
-    }
+    const { username, password } = req.body;
 
     const response = await authLogin({
-      username: credentials.username,
-      password: credentials.password
+      username,
+      password
     });
 
-    return res.status(200).json(
-      response
-    )
-  }catch(error){
+    return res.status(200).json(response);
+
+  } catch (error) {
     next(error);
   }
-}
+};

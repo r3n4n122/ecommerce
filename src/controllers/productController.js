@@ -4,62 +4,66 @@ import {
   listCategories,
   findProduct
 } from "../services/products/index.js";
+import { productQuerySchema } from "../schema/productSchema.js";
 
 export const indexProducts = async (req, res, next) => {
-  try{
-    const { limit, page, category, search } = req.query;
+  try {
+    const validation = productQuerySchema.safeParse(req.query);
 
-    const limitNum = limit ? Number(limit) : 10;
-    const pageNum = page ? Number(page) : 1;
-    
-    if(limit > 20){
-      throw new AppError("limit não pode ser maior que 20", 400)
+    if (!validation.success) {
+      const issue = validation.error.issues[0];
+      let message = "Parâmetros de consulta inválidos";
+
+      if (issue.code === "too_big") message = "limit não pode ser maior que 20";
+      if (issue.code === "too_small" && issue.path[0] === "page") message = "page não pode ser menor que 1";
+
+      throw new AppError(message, 400);
     }
 
-    if(pageNum  < 1){
-      throw new AppError("page não pode ser menor que 1", 400)
-    }
-    
+    const { limit, page, category, search } = validation.data;
+
     const products = await listProducts({
-      limit: limitNum, 
-      page: pageNum,
-      search: search || "",
-      category: category || ""
+      limit,
+      page,
+      search,
+      category
     });
 
-    return res.status(200).json(
-      products
-    )
-  }catch(error){
+    return res.status(200).json(products);
+  } catch (error) {
     next(error);
   }
-}
+};
 
 export const indexCategories = async (req, res, next) => {
-  try{
+  try {
     const categories = await listCategories();
-
-    return res.status(200).json(
-      categories
-    )
-  }catch(error){
-    next(error)
+    return res.status(200).json(categories);
+  } catch (error) {
+    next(error);
   }
-}
+};
 
 export const showProduct = async (req, res, next) => {
-  try{
-    const num = Number(req.params.id);
+  try {
+    const { id } = req.params;
+    const numId = Number(id);
 
-    if(!Number.isInteger(num)){
-      throw new AppError("ID inválido (não númerico)", 400)
+    if (!Number.isInteger(numId)) {
+      throw new AppError("ID inválido (não númerico)", 400);
     }
-  
-    const product = await findProduct({id: num});
-    return res.status(200).json(
-      product
-    )
-  }catch(error){
-    next(error)
+
+    const product = await findProduct({ id: numId });
+
+    const { price, discountPercentage } = product;
+    const discountAmount = (price * discountPercentage) / 100;
+    const finalPrice = parseFloat((price - discountAmount).toFixed(2));
+
+    return res.status(200).json({
+      ...product,
+      finalPrice
+    });
+  } catch (error) {
+    next(error);
   }
-}
+};

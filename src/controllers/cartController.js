@@ -3,7 +3,7 @@ import { addCart, editCart } from "../services/cartService.js";
 import { 
   validationCreateCart,
   validationUpdateCart
-} from "../sechams/cartSchema.js"
+} from "../schema/cartSchema.js"
 
 export const createCart = async (req, res, next)  => {
   try{
@@ -30,26 +30,23 @@ export const createCart = async (req, res, next)  => {
   }
 }
 
-export const updateCard = async (req, res, next)  => {
-  try{
-    const cardId = req.params.id
-    const products = req.body.products
-    const validation = validationUpdateCart(req.body)
+export const updateCart = async (req, res, next) => {
+  try {
 
-    if(!validation.success){
+    const validation = validationUpdateCart(req.body);
+    
+    if (!validation.success) {
       const firstError = validation.error.issues[0].message;
       throw new AppError(firstError, 400);
     }
 
-    const cart = await editCart({
-      cartId: cardId,
-      products: products
-    })
+    const { id: cartId } = req.params;
+    const { products } = req.body;
 
-    res.status(200).json(
-      cart
-    )
-  }catch(error){
+    const cart = await editCart({ cartId, products });
+
+    return res.status(200).json(cart);
+  } catch (error) {
     next(error);
   }
-}
+};
