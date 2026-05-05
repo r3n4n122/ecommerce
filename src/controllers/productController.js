@@ -1,7 +1,8 @@
 import AppError from "../errors/AppError.js";
 import { 
   listProducts, 
-  listCategories 
+  listCategories,
+  findProduct
 } from "../services/products/index.js";
 
 export const indexProducts = async (req, res, next) => {
@@ -48,7 +49,16 @@ export const indexCategories = async (req, res, next) => {
 
 export const showProduct = async (req, res, next) => {
   try{
-    
+    const num = Number(req.params.id);
+
+    if(!Number.isInteger(num)){
+      throw new AppError("ID inválido (não númerico)", 400)
+    }
+  
+    const product = await findProduct({id: num});
+    return res.status(200).json(
+      product
+    )
   }catch(error){
     next(error)
   }

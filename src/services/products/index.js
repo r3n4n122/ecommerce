@@ -1,4 +1,5 @@
 import { listProducts } from "./listProductsService.js";
-import { listCategories } from "./categoryService.js";
+import { listCategories } from "./listCategoryService.js";
+import { findProduct } from "./showProductService.js";
 
-export { listProducts, listCategories }
+export { listProducts, listCategories, findProduct }

@@ -10,6 +10,10 @@ export const errorMiddleware = (err, req, res, next) => {
       return res.status(status).json({
         message: err.message || "usuário ou senha inválido"
       })
+    case 404:
+      return res.status(status).json({
+        message: err.message || "Página não encontrada."
+      })
     case 500:
       console.log(err)
       return res.status(status).json({

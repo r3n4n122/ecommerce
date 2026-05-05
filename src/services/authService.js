@@ -30,7 +30,7 @@ export const authLogin = async ({ username, password }) => {
       const status = e.response.status;
 
       if (status === 400 && message.toLowerCase().includes("invalid credentials")) {
-        throw new AppError("invalid credentials", 401);
+        throw new AppError(message, 401);
       }
       throw new AppError(message, status);
     }
