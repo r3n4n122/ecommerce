@@ -1,10 +1,11 @@
 import express from 'express'
-import { createCart } from '../controllers/cartController.js';
+import { 
+  createCart, 
+  updateCard 
+} from '../controllers/cartController.js';
 const router = express.Router();
 
 
-router.put('/:id', () => {
-
-})
+router.put('/:id', updateCard)
 router.post('/', createCart)
 export default router;

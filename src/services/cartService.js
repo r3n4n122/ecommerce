@@ -1,4 +1,7 @@
-import { postInstance } from "../services/fetchApiService.js"
+import { 
+  postInstance, 
+  putInstance 
+} from "../services/fetchApiService.js"
 import AppError from "../errors/AppError.js";
 
 export const addCart = async ({userId, products}) => {
@@ -14,11 +17,10 @@ export const addCart = async ({userId, products}) => {
   })
 
   if (!response.data){
-    throw new AppError("Não foi possível salvar o carrinho")
+    throw new AppError("Não foi possível salvar o carrinho", 400)
   }
   
   const productList = response.data.products
-  
   const productsFormated = productList.map(p => ({
     productId: p.id,
     name: p.title,
@@ -27,15 +29,57 @@ export const addCart = async ({userId, products}) => {
     subtotal: Number((p.price * p.quantity).toFixed(2))
   }));
 
-
-  const card = {
-    cardId: response.data.id,
-    userId: userId,
-    totalProducts: productsFormated.length,
-    totalQuantity:  productsFormated.reduce((sum, p) => sum + p.quantity, 0),
-    totalPrice: Number(productsFormated.reduce((sum, p) => sum + p.subtotal, 0).toFixed(2)),
+  const cart = {
+    cartId: response.data.id,
+    userId: response.data.userId,
+    totalProducts: response.data.totalProducts,
+    totalQuantity:  response.data.totalQuantity,
+    totalPrice: response.data.total,
     products: productsFormated
   }
 
-  return card
+  return cart
+}
+
+export const editCart = async ({cartId, products}) => {
+  try{
+    const response = await putInstance({
+      path: `/carts/${cartId}`,
+      body: {
+        products: products.map(item => ({
+          id: item.productId,
+          quantity: item.quantity
+        }))
+      }
+    })
+
+    if (!response.data){
+      throw new AppError("Não foi possível atualizar o o carrinho", 400)
+    }
+
+    const productList = response.data.products
+    const productsFormated = productList.map(p => ({
+      productId: p.id,
+      name: p.title,
+      quantity: p.quantity,
+      price: p.price,
+      subtotal: Number((p.price * p.quantity).toFixed(2))
+    }));
+
+    const cart = {
+      cartId: response.data.id,
+      userId: response.data.userId,
+      totalProducts: response.data.totalProducts,
+      totalQuantity:  response.data.totalQuantity,
+      totalPrice: response.data.total,
+      products: productsFormated
+    }
+
+    return cart
+  }catch(error){
+    if(error.status === 404){
+      throw new AppError("Carrinho não encontrado", 404)
+    }
+    throw new AppError(error.message, error.status)
+  }
 }
