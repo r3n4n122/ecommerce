@@ -73,8 +73,6 @@ A aplicação utiliza Node.js (v18+) com ES Modules e segue uma estrutura organi
    EXTERNAL_API_URL=https://dummyjson.com
    
    3. Inicie o servidor:
-   
-   # Desenvolvimento
    npm run dev
    
 
