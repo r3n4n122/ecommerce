@@ -15,7 +15,6 @@ export const errorMiddleware = (err, req, res, next) => {
         message: err.message || "Página não encontrada."
       })
     case 500:
-      console.log(err)
       return res.status(status).json({
         message: "Erro interno no servidor"
       })
