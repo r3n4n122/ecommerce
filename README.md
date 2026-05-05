@@ -8,7 +8,7 @@ API REST que simula o back-end de um e-commerce, integrando-se à API externa [D
 A aplicação utiliza Node.js (v18+) com ES Modules e segue uma estrutura organizada da seguinte forma:
 
 * Camada de Services: Centraliza a regra de negócio e a comunicação externa. Implementa Data Mapping para converter os campos da API externa (ex: title -> name) e cálculos financeiros (finalPrice e subtotal).
-* Validação (Zod): A aplicação utiliza Zod para validação dos parametros de body e query params. os arquivos ficam em /src/schema
+* Validação (Zod): A aplicação utiliza Zod para validação dos parametros de body e query params. Os arquivos ficam em /src/schema.
 * Tratamento de Erros Global: Utilização de um middleware de erro centralizado que intercepta falhas de negócio (AppError), erros de validação e erros de rede (Axios), sem vazar stack traces.
 * Axios Factory: Centralização das chamadas HTTP em um fetchApiService para reaproveitamento de instâncias e configuração de baseURL.
 ------------------------------
@@ -62,17 +62,15 @@ A aplicação utiliza Node.js (v18+) com ES Modules e segue uma estrutura organi
 
 ## ⚙️ Configuração e Execução
 
-   1. Instale as dependências:
+1. Instale as dependências:  
+`npm install`
    
-   npm install
+2. Configure as Variáveis de Ambiente:
+Crie um arquivo .env baseado no .env.example:  
+`PORT=3000`
+`EXTERNAL_API_URL=https://dummyjson.com`
    
-   2. Configure as Variáveis de Ambiente:
-   Crie um arquivo .env baseado no .env.example:
-   
-   PORT=3000
-   EXTERNAL_API_URL=https://dummyjson.com
-   
-   3. Inicie o servidor:
-   npm run dev
+3. Inicie o servidor:
+`npm run dev`
    
 
