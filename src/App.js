@@ -3,7 +3,8 @@ import dotenv from 'dotenv'
 import {
   authRouter, 
   productRouter,
-  cartRouter
+  cartRouter,
+  healRouter,
 } from './routers/index.js'
 import { errorMiddleware } from './middleware/errorMiddleware.js';
 
@@ -12,6 +13,7 @@ const app = express();
 
 app.use(express.json());
 
+app.use('/health', healRouter)
 app.use('/auth', authRouter)
 app.use('/products', productRouter)
 app.use('/carts', cartRouter)
