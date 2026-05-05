@@ -18,9 +18,6 @@ app.use('/health', healRouter);
 app.use('/auth', authRouter);
 app.use('/products', productRouter);
 app.use('/carts', cartRouter);
-app.use('/', (req, res) => {
-  res.status(200).json({message: "Hello Word"});
-});
 
 app.use(errorMiddleware);
 
